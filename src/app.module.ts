@@ -4,11 +4,13 @@ import { AppService } from './app.service';
 import { AuthModule } from './app/http/auth/auth.module';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
+import { PickupRequestModule } from './app/http/pickup_request/pickup_request.module';
 
 
 @Module({
   imports: [
     AuthModule,
+    PickupRequestModule,
     ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRootAsync({
       useFactory: (): TypeOrmModuleOptions => {
