@@ -1,6 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 import { Roles } from './enums/roles.enum';
-import { UserPickupRequest } from './user_pickup_request.entity';
+import { PickupRequest } from './pickup_request.entity';
 
 @Entity('users')
 export class User {
@@ -52,9 +52,10 @@ export class User {
   })
   updated_at: Date;
   // Define the relations
-  @OneToMany(() => UserPickupRequest, userPickupRequest => userPickupRequest.userId, { onDelete: 'CASCADE' })
-  userPickupRequests: UserPickupRequest[];
-
-  @OneToMany(() => UserPickupRequest, userPickupRequest => userPickupRequest.trashBankId, { onDelete: 'CASCADE' })
-  trashBankPickupRequests: UserPickupRequest[];
+  @OneToMany(() => PickupRequest, pickupRequest => pickupRequest.user, { onDelete: 'CASCADE' })
+  pickupRequests: PickupRequest[];
+  
+  @OneToMany(() => PickupRequest, pickupRequest => pickupRequest.trashBank, { onDelete: 'CASCADE' })
+  receivedPickupRequests: PickupRequest[];
+  
 }
