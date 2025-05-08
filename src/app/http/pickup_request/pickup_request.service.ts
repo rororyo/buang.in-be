@@ -1,6 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Status } from 'database/entities/enums/status.enum';
 import { PickupRequest } from 'database/entities/pickup_request.entity';
 import { Repository } from 'typeorm';
 import { CreatePickupRequestDto } from './pickup_request.dto';

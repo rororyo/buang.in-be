@@ -9,4 +9,6 @@ export class CreatePickupRequestDto {
     phone_number: string;
     pickup_location: string;
     pickup_time: Date;
+    user_id: string;
+    trash_bank_id: string;
 }
