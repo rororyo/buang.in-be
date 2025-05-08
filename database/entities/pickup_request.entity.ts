@@ -40,6 +40,7 @@ export class PickupRequest {
   
   @Column()
   user_id: string;
+  
   @Column()
   trash_bank_id: string;
 
