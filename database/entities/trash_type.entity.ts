@@ -1,5 +1,6 @@
 import { Column, Entity, PrimaryGeneratedColumn, OneToMany } from "typeorm";
 import { PickupRequestsTrashType } from "./pickup_request_trash_type.entity";
+import { TrashDetailTrashType } from "./trash_detail_trash_type.entity";
 
 @Entity('trash_types')
 export class TrashType {
@@ -11,4 +12,7 @@ export class TrashType {
 
   @OneToMany(() => PickupRequestsTrashType, prtt => prtt.trashType)
   pickupRequestsTrashTypes: PickupRequestsTrashType[];
+
+  @OneToMany(() => TrashDetailTrashType, trashDetailTrashType => trashDetailTrashType.trashType)
+  trashDetailsTrashTypes: TrashDetailTrashType[];
 }
