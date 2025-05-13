@@ -2,10 +2,10 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PickupRequest } from 'database/entities/pickup_request.entity';
 import { Repository } from 'typeorm';
-import { CreatePickupRequestDto } from './pickup_request.dto';
+import { CreatePickupRequestDto } from '../dto/pickup_request.dto';
 
 @Injectable()
-export class PickupRequestService {
+export class SetorService {
   constructor(
     @InjectRepository(PickupRequest)
     private pickuprequestRepository: Repository<PickupRequest>

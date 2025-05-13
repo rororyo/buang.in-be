@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
-import { PickupRequestController } from './pickup_request.controller';
+import { SetorController } from './setor.controller';
 // import { adminService } from './admin.service';
 // import { AuthModule } from '../auth/auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PickupRequest } from 'database/entities/pickup_request.entity';
-import { PickupRequestService } from './pickup_request.service';
+import { SetorService } from './setor.service';
 
 @Module({
   imports: [
@@ -12,7 +12,7 @@ import { PickupRequestService } from './pickup_request.service';
       PickupRequest
     ])
   ],
-  controllers: [PickupRequestController],
-  providers: [PickupRequestService]
+  controllers: [SetorController],
+  providers: [SetorService]
 })
-export class PickupRequestModule {}
+export class SetorModule {}

@@ -4,15 +4,15 @@ import { AppService } from './app.service';
 import { AuthModule } from './app/http/auth/auth.module';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
-import { PickupRequestModule } from './app/http/pickup_request/pickup_request.module';
-import { HistoryModule } from './app/http/history/history.module';
+import { SetorModule } from './app/http/setor/setor.module';
+import { RiwayatModule } from './app/http/riwayat/riwayat.module';
 
 
 @Module({
   imports: [
     AuthModule,
-    PickupRequestModule,
-    HistoryModule,
+    SetorModule,
+    RiwayatModule,
     ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRootAsync({
       useFactory: (): TypeOrmModuleOptions => {

@@ -4,7 +4,7 @@ import { PickupRequest } from 'database/entities/pickup_request.entity';
 import { Repository } from 'typeorm';
 
 @Injectable()
-export class HistoryService {
+export class RiwayatService {
   constructor(
     @InjectRepository(PickupRequest)
     private pickuprequestRepository: Repository<PickupRequest>

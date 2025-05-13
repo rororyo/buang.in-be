@@ -1,23 +1,25 @@
-import { Body, Controller, Get, UseGuards } from '@nestjs/common';
+import { Body, Controller, Post, UseGuards } from '@nestjs/common';
 // import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 // import { RolesGuard } from '../auth/guards/roles.guard';
 // import { Roles } from '../common/decorators/roles.decorator';
-import { HistoryService } from './history.service';
+// import { Status } from 'database/entities/enums/status.enum';
+import { CreatePickupRequestDto } from '../dto/pickup_request.dto';
 import { PickupRequest } from 'database/entities/pickup_request.entity';
+import { SetorService } from './setor.service';
 
 @Controller('api/pickup_request')
-export class HistoryController {
+export class SetorController {
   constructor(
-    private readonly historyService:HistoryService
+    private readonly setorService:SetorService
   ) {}
 
-  @Get()
-  findAll(): Promise<PickupRequest[]> {
-    return this.historyService.findAll();
+  @Post()
+  create(@Body() createPickupRequestDto: CreatePickupRequestDto): Promise<PickupRequest> {
+    return this.setorService.create(createPickupRequestDto);
   }
   // @UseGuards(JwtAuthGuard, RolesGuard)
   // @Roles('admin')
-  // @Post('pickup_request')
+  // @Post('setor')
   // async postPickupRequest(
   //   @Body('request_name') name:string,
   //   @Body('pickup_address')address: string,

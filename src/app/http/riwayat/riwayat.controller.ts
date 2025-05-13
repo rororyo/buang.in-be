@@ -1,21 +1,19 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, UseGuards } from '@nestjs/common';
 // import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 // import { RolesGuard } from '../auth/guards/roles.guard';
 // import { Roles } from '../common/decorators/roles.decorator';
-import { PickupRequestService } from './pickup_request.service';
-import { Status } from 'database/entities/enums/status.enum';
-import { CreatePickupRequestDto } from './pickup_request.dto';
 import { PickupRequest } from 'database/entities/pickup_request.entity';
+import { RiwayatService } from './riwayat.service';
 
 @Controller('api/pickup_request')
-export class PickupRequestController {
+export class RiwayatController {
   constructor(
-    private readonly pickupRequestService:PickupRequestService
+    private readonly riwayatService:RiwayatService
   ) {}
 
-  @Post()
-  create(@Body() createPickupRequestDto: CreatePickupRequestDto): Promise<PickupRequest> {
-    return this.pickupRequestService.create(createPickupRequestDto);
+  @Get()
+  findAll(): Promise<PickupRequest[]> {
+    return this.riwayatService.findAll();
   }
   // @UseGuards(JwtAuthGuard, RolesGuard)
   // @Roles('admin')
