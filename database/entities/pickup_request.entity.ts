@@ -2,6 +2,7 @@ import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColum
 import { Status } from './enums/status.enum';
 import { PickupRequestsTrashType } from './pickup_request_trash_type.entity';
 import { User } from './user.entity';
+import { TrashDetail } from './trash_detail.entity';
 
 @Entity('pickup_requests')
 export class PickupRequest {
@@ -40,12 +41,16 @@ export class PickupRequest {
   
   @Column()
   user_id: string;
+  
   @Column()
   trash_bank_id: string;
 
   //Define the relations
   @OneToMany(() => PickupRequestsTrashType, pickupRequestsTrashType => pickupRequestsTrashType.pickupRequest, { onDelete: 'CASCADE' })
   pickupRequestsTrashTypes: PickupRequestsTrashType[];
+
+  @OneToMany(() => TrashDetail, trashDetail => trashDetail.pickupRequest, { onDelete: 'CASCADE' })
+  trashDetails: TrashDetail[];
   
   @ManyToOne(() => User, user => user.pickupRequests, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'user_id' })  // maps the FK explicitly
