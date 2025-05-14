@@ -59,7 +59,7 @@ export class AuthController {
     response.cookie('token', jwt, {
       httpOnly: true,
       secure: false,
-      sameSite: 'none',
+      sameSite: 'lax',
     });
     // Set the Authorization header
     response.setHeader('Authorization', `Bearer ${jwt}`);
@@ -78,7 +78,7 @@ export class AuthController {
     response.clearCookie('token', {
       httpOnly: true,
       secure: false,
-      sameSite: 'none',
+      sameSite: 'lax',
     });
   
     // Remove the Authorization header

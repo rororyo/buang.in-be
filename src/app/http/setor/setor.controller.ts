@@ -3,7 +3,7 @@ import { Body, Controller, Post, UseGuards } from '@nestjs/common';
 // import { RolesGuard } from '../auth/guards/roles.guard';
 // import { Roles } from '../common/decorators/roles.decorator';
 // import { Status } from 'database/entities/enums/status.enum';
-import { CreatePickupRequestDto } from '../dto/pickup_request.dto';
+import { CreatePickupRequestDto } from '../../validator/pickup/pickup_request.dto';
 import { PickupRequest } from 'database/entities/pickup_request.entity';
 import { SetorService } from './setor.service';
 

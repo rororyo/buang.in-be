@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PickupRequest } from 'database/entities/pickup_request.entity';
 import { Repository } from 'typeorm';
-import { CreatePickupRequestDto } from '../dto/pickup_request.dto';
+import { CreatePickupRequestDto } from '../../validator/pickup/pickup_request.dto';
 
 @Injectable()
 export class SetorService {
