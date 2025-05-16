@@ -2,46 +2,49 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PickupRequest } from 'database/entities/pickup_request.entity';
 import { Repository } from 'typeorm';
-import { CreatePickupRequestDto } from '../../validator/pickup/pickup_request.dto';
+import { CreatePickupRequestDto, SearchPickupRequestDto } from '../../validator/pickup/pickup_request.dto';
+import { PickupRequestsTrashType } from 'database/entities/pickup_request_trash_type.entity';
 
 @Injectable()
 export class SetorService {
   constructor(
     @InjectRepository(PickupRequest)
-    private pickuprequestRepository: Repository<PickupRequest>
+    private pickuprequestRepository: Repository<PickupRequest>,
+    @InjectRepository(PickupRequestsTrashType)
+    private pickupRequestsTrashTypeRepository: Repository<PickupRequestsTrashType>
   ) {}
 
-  create(createPickupRequestDto: CreatePickupRequestDto): Promise<PickupRequest> {
-    const pickuprequest = this.pickuprequestRepository.create(createPickupRequestDto);
+ async createPickupRequest(createPickupRequestDto: CreatePickupRequestDto): Promise<PickupRequest> {
+    const { latitude,longitude, ...rest } = createPickupRequestDto;
+    let point: any = undefined;
+    if (latitude && longitude) {
+      point = {
+        type: 'Point',
+        coordinates: [parseFloat(longitude), parseFloat(latitude)],
+      };
+    }
+    const pickuprequest = this.pickuprequestRepository.create({
+      ...rest,
+      pickup_location: point,
+    });
     return this.pickuprequestRepository.save(pickuprequest);
   }
 
-  // async postPickupRequest(
-  //   name: string,
-  //   address: string,
-  //   total_weight: number,
-  //   img_url: string,
-  //   status: Status,
-  //   phone_number: string,
-  //   pickup_location: string,
-  //   pickup_time: Date,
-  // ) {
-  //   // Create a new item, with category_id directly assigned
-  //   const pickuprequest = this.pickuprequestRepository.create({
-  //     name: name,
-  //     address: address,
-  //     total_weight: total_weight,
-  //     img_url: img_url,
-  //     status: status,
-  //     phone_number: phone_number,
-  //     pickup_location: pickup_location,
-  //     pickup_time: pickup_time,
-  //   });
+async createPickupRequestTrashType(pickupRequestId: string, trashTypeIds: string[]) {
+  const values = trashTypeIds.map((trashTypeId) => ({
+    pickupRequestId,
+    trashTypeId,
+  }));
 
-  //   // Save the new item
-  //   const data = await this.pickuprequestRepository.save(pickuprequest);
+  await this.pickupRequestsTrashTypeRepository.insert(values);
+}
 
-  //   if (!data) throw new NotFoundException('Pickup Request could not be made');
-
-  //   return data;  }
+async searchPickupRequest(query:SearchPickupRequestDto):Promise<PickupRequest[]>{
+  const {user_id} = query;
+  let {page,limit} = query
+  page = page || 1;
+  limit = limit || 10;
+  const skip = (page - 1) * limit;
+  return await this.pickuprequestRepository.find({where:{user_id:user_id},take:limit,skip:skip});
+}
 }

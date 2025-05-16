@@ -5,7 +5,7 @@ import { join } from 'path';
 import { NestExpressApplication } from '@nestjs/platform-express';
 
 async function bootstrap() {
-  const app = await NestFactory.create<NestExpressApplication>(AppModule); 
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
   app.use(cookieParser());
 
   app.enableCors({
@@ -14,11 +14,9 @@ async function bootstrap() {
     allowedHeaders: 'Content-Type, Authorization',
     methods: 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
   });
-
-  app.useStaticAssets(join(__dirname, '..', 'public'), {
-    prefix: '/images', // ✅ means http://localhost:5000/images/setor/filename.jpg
-  });
-
+  const staticAssetsPath = join(__dirname, '../..', 'public');
+  console.log(`Static assets path: ${staticAssetsPath}`);
+  app.useStaticAssets(staticAssetsPath);
   await app.listen(5000);
 }
 bootstrap();
