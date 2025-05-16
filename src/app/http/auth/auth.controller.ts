@@ -35,8 +35,8 @@ export class AuthController {
   }
 
   @Post('register')
-  async register(@Body() regsiterDto: RegisterDto) {
-    await this.authService.register(regsiterDto);
+  async register(@Body() registerDto: RegisterDto) {
+    await this.authService.register(registerDto);
     return {
       status: 'success',
       message: 'Register Success',
