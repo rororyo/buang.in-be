@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, Point, PrimaryGeneratedColumn } from 'typeorm';
 import { Status } from './enums/status.enum';
 import { PickupRequestsTrashType } from './pickup_request_trash_type.entity';
 import { User } from './user.entity';
@@ -27,10 +27,16 @@ export class PickupRequest {
   @Column()
   phone_number: string;
 
-  @Column()
-  pickup_location: string;
+  @Column({
+    type: 'geometry',
+    spatialFeatureType: 'Point',
+    srid: 4326,
+  })
+  pickup_location: Point;
 
-  @Column()
+  @Column({
+    type: 'timestamptz'
+  })
   pickup_time: Date;
 
   @Column({

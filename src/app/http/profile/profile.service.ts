@@ -2,8 +2,8 @@ import { BadRequestException, Injectable, NotFoundException } from '@nestjs/comm
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'database/entities/user.entity';
 import { Repository } from 'typeorm';
-import { UpdateProfileDto } from '../dto/users.dto';
 import { hash } from 'argon2';
+import { UpdateProfileDto } from 'src/app/validator/pickup/users.dto';
 
 @Injectable()
 export class ProfileService {

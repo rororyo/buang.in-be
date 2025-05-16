@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, Point } from 'typeorm';
 import { Roles } from './enums/roles.enum';
 import { PickupRequest } from './pickup_request.entity';
 
@@ -31,8 +31,13 @@ export class User {
   @Column({nullable: true})
   phone_number: string;
 
-  @Column({nullable: true})
-  location: string;
+  @Column({
+    type: 'geometry',
+    spatialFeatureType: 'Point',
+    srid: 4326,
+    nullable: true,
+  })
+  location: Point;
 
   @Column({nullable: true})
   address: string;

@@ -39,8 +39,6 @@ import { ProfileModule } from './app/http/profile/profile.module';
                 database: process.env.DB_NAME,
               }),
         };
-    
-        console.log('🛠️ Final DB Config:', config); // 👈 this will show what TypeORM sees
         return config;
       },
     }),

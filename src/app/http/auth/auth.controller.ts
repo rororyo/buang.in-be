@@ -15,7 +15,6 @@ import { Request, Response, response } from 'express';
 import { verify } from 'argon2';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { getAuthCookie } from 'src/utils/auth/get-auth-cookie';
-import { Roles } from 'database/entities/enums/roles.enum';
 
 @Controller('auth')
 export class AuthController {
@@ -59,7 +58,7 @@ export class AuthController {
     response.cookie('token', jwt, {
       httpOnly: true,
       secure: false,
-      sameSite: 'none',
+      sameSite: 'lax',
     });
     // Set the Authorization header
     response.setHeader('Authorization', `Bearer ${jwt}`);
@@ -78,7 +77,7 @@ export class AuthController {
     response.clearCookie('token', {
       httpOnly: true,
       secure: false,
-      sameSite: 'none',
+      sameSite: 'lax',
     });
   
     // Remove the Authorization header

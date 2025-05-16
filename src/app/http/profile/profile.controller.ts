@@ -1,10 +1,11 @@
-import { Body, Controller, Get, Param, Patch, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Put, UseGuards } from '@nestjs/common';
 // import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 // import { RolesGuard } from '../auth/guards/roles.guard';
 // import { Roles } from '../common/decorators/roles.decorator';
 import { User } from 'database/entities/user.entity';
 import { ProfileService } from './profile.service';
-import { UpdateProfileDto } from '../dto/users.dto';
+import { UpdateProfileDto } from 'src/app/validator/pickup/users.dto';
+
 
 @Controller('api/user')
 export class ProfileController {
@@ -12,7 +13,7 @@ export class ProfileController {
     private readonly profileService:ProfileService
   ) {}
 
-  @Patch(':id')
+  @Put(':id')
   updateUserProfile(
     @Param('id') id: string,
     @Body() dto: UpdateProfileDto,
