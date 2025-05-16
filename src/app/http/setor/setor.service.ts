@@ -13,7 +13,7 @@ export class SetorService {
 
   create(createPickupRequestDto: CreatePickupRequestDto): Promise<PickupRequest> {
     const pickuprequest = this.pickuprequestRepository.create(createPickupRequestDto);
-    return this.pickuprequestRepository.save(createPickupRequestDto);
+    return this.pickuprequestRepository.save(pickuprequest);
   }
 
   // async postPickupRequest(
