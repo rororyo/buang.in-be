@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'database/entities/user.entity';
 import { Repository } from 'typeorm';
 import { hash } from 'argon2';
-import { UpdateProfileDto } from 'src/app/validator/pickup/users.dto';
+import { UpdateProfileDto } from 'src/app/validator/user/users.dto';
 
 @Injectable()
 export class ProfileService {

@@ -1,16 +1,22 @@
 import { BadRequestException, Body, Controller, Get, Post, Query, Req, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
-import { CreatePickupRequestDto, SearchPickupRequestDto } from '../../validator/pickup/pickup_request.dto';
+import { CreatePickupRequestDto, SearchPickupRequestDto } from '../../validator/pickup/pickupRequest.dto';
 import { SetorService } from './setor.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import * as path from 'path';
 import { Request } from 'express';
+import { SearchNearbyTrashBankDto } from 'src/app/validator/trash-bank/trashBank.dto';
 
 @Controller('api/setor')
 export class SetorController {
   constructor(private readonly setorService: SetorService) {}
 
+  @UseGuards(JwtAuthGuard)
+  @Get('trash-types')
+  async getTrashTypes() {
+    return this.setorService.getTrashTypes();
+  }
   @UseGuards(JwtAuthGuard)
   @Post()
   @UseInterceptors(
@@ -51,16 +57,21 @@ export class SetorController {
     };
   }
 
-@UseGuards(JwtAuthGuard)
-@Get()
-async search(@Query() query: SearchPickupRequestDto, @Req() req: Request) {
-  if (!req.user || typeof req.user !== 'object' || !('userId' in req.user)) {
-    throw new BadRequestException('User information is missing from request');
+  @UseGuards(JwtAuthGuard)
+  @Get('nearby-trash-banks')
+  async getNearbyTrashBanks(@Query() searchNearbyTrashBankDto: SearchNearbyTrashBankDto) {
+    const { lat, lon } = searchNearbyTrashBankDto;
+    if (!lat || !lon) {
+      throw new BadRequestException('Latitude and longitude are required in the query parameters');
+    }
+    const result = await this.setorService.getNearbyTrashBanks({ lat, lon }, searchNearbyTrashBankDto.page, searchNearbyTrashBankDto.limit);
+    return {
+      status: 'success',
+      message: 'Nearby trash banks fetched successfully',
+      data: result.data,
+      paging: result.metadata
+    }
   }
 
-  const user = req.user as { userId: string };
-  query.user_id = user.userId;
-  return await this.setorService.searchPickupRequest(query);
-}
 }
 

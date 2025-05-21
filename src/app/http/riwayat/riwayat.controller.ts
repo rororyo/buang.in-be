@@ -1,39 +1,45 @@
-import { Body, Controller, Get, UseGuards } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, Param, Query, Req, UnauthorizedException, UseGuards } from '@nestjs/common';
 // import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 // import { RolesGuard } from '../auth/guards/roles.guard';
 // import { Roles } from '../common/decorators/roles.decorator';
 import { PickupRequest } from 'database/entities/pickup_request.entity';
 import { RiwayatService } from './riwayat.service';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { SearchPickupRequestDto } from 'src/app/validator/pickup/pickupRequest.dto';
+import { Request } from 'express';
 
-@Controller('api/pickup_request')
+@Controller('api/riwayat')
 export class RiwayatController {
   constructor(
     private readonly riwayatService:RiwayatService
   ) {}
 
-  @Get()
-  findAll(): Promise<PickupRequest[]> {
-    return this.riwayatService.findAll();
+@UseGuards(JwtAuthGuard)
+@Get()
+async search(@Query() query: SearchPickupRequestDto, @Req() req: Request) {
+  if (!req.user || typeof req.user !== 'object' || !('userId' in req.user)) {
+    throw new BadRequestException('User information is missing from request');
   }
-  // @UseGuards(JwtAuthGuard, RolesGuard)
-  // @Roles('admin')
-  // @Post('pickup_request')
-  // async postPickupRequest(
-  //   @Body('request_name') name:string,
-  //   @Body('pickup_address')address: string,
-  //   @Body('trash_weight')total_weight: number,
-  //   @Body('img_path')img_url: string,
-  //   @Body('pickup_status')status: Status,
-  //   @Body('request_phone_number')phone_number: string,
-  //   @Body('request_location')pickup_location: string,
-  //   @Body('request_time')pickup_time: Date,
-  // ) {
-  //    await this.pickupRequestService.postPickupRequest(
-  //     name,address,total_weight,img_url,status,phone_number,pickup_location,pickup_time
-  //   )
-  //   return{
-  //     status:'success',
-  //     message:'Pickup Request created successfully',
-  //   }
-  // }
+
+  const user = req.user as { userId: string };
+  query.user_id = user.userId;
+  const result = await this.riwayatService.searchPickupRequest(query);
+  return {
+      status: 'success',
+      message: 'Riwayat fetched successfully',
+      data: result.data,
+      paging: result.metadata
+  }
+}
+
+@UseGuards(JwtAuthGuard)
+@Get('/:id')
+async getPickupRequest(@Param('id') id: string, @Req() req: Request) {
+  const result = await this.riwayatService.getPickupRequest(id);
+  return {
+      status: 'success',
+      message: 'Detail riwayat fetched successfully',
+      data: result
+  };
+}
 }

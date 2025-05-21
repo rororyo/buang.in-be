@@ -4,7 +4,7 @@ import { Body, Controller, Get, Param, Put, UseGuards } from '@nestjs/common';
 // import { Roles } from '../common/decorators/roles.decorator';
 import { User } from 'database/entities/user.entity';
 import { ProfileService } from './profile.service';
-import { UpdateProfileDto } from 'src/app/validator/pickup/users.dto';
+import { UpdateProfileDto } from 'src/app/validator/user/users.dto';
 
 
 @Controller('api/user')
