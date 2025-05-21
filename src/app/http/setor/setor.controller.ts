@@ -1,41 +1,77 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
-// import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-// import { RolesGuard } from '../auth/guards/roles.guard';
-// import { Roles } from '../common/decorators/roles.decorator';
-// import { Status } from 'database/entities/enums/status.enum';
-import { CreatePickupRequestDto } from '../dto/pickup_request.dto';
-import { PickupRequest } from 'database/entities/pickup_request.entity';
+import { BadRequestException, Body, Controller, Get, Post, Query, Req, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
+import { CreatePickupRequestDto, SearchPickupRequestDto } from '../../validator/pickup/pickupRequest.dto';
 import { SetorService } from './setor.service';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
+import * as path from 'path';
+import { Request } from 'express';
+import { SearchNearbyTrashBankDto } from 'src/app/validator/trash-bank/trashBank.dto';
 
-@Controller('api/pickup_request')
+@Controller('api/setor')
 export class SetorController {
-  constructor(
-    private readonly setorService:SetorService
-  ) {}
+  constructor(private readonly setorService: SetorService) {}
 
-  @Post()
-  create(@Body() createPickupRequestDto: CreatePickupRequestDto): Promise<PickupRequest> {
-    return this.setorService.create(createPickupRequestDto);
+  @UseGuards(JwtAuthGuard)
+  @Get('trash-types')
+  async getTrashTypes() {
+    return this.setorService.getTrashTypes();
   }
-  // @UseGuards(JwtAuthGuard, RolesGuard)
-  // @Roles('admin')
-  // @Post('setor')
-  // async postPickupRequest(
-  //   @Body('request_name') name:string,
-  //   @Body('pickup_address')address: string,
-  //   @Body('trash_weight')total_weight: number,
-  //   @Body('img_path')img_url: string,
-  //   @Body('pickup_status')status: Status,
-  //   @Body('request_phone_number')phone_number: string,
-  //   @Body('request_location')pickup_location: string,
-  //   @Body('request_time')pickup_time: Date,
-  // ) {
-  //    await this.pickupRequestService.postPickupRequest(
-  //     name,address,total_weight,img_url,status,phone_number,pickup_location,pickup_time
-  //   )
-  //   return{
-  //     status:'success',
-  //     message:'Pickup Request created successfully',
-  //   }
-  // }
+  @UseGuards(JwtAuthGuard)
+  @Post()
+  @UseInterceptors(
+    FileInterceptor('image', {
+      storage: diskStorage({
+        destination: path.resolve(__dirname, '../../../../../public/images/setor'),
+        filename: (req, file, cb) => {
+          const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+          const ext = path.extname(file.originalname);
+          cb(null, `${file.fieldname}-${uniqueSuffix}${ext}`);
+        },
+      }),
+    }),
+  )
+  async create(
+    @UploadedFile() file: Express.Multer.File,
+    @Body() createPickupRequestDto: CreatePickupRequestDto,
+  ) {
+    if (!file) {
+      throw new BadRequestException('Image file is required');
+    }
+
+    const imageUrl = `/images/setor/${file.filename}`;
+
+    const pickupRequest = await this.setorService.createPickupRequest({
+      ...createPickupRequestDto,
+      img_url: imageUrl,
+    });
+    const trashTypeJson = JSON.parse(createPickupRequestDto.trash_type_ids);
+    await this.setorService.createPickupRequestTrashType(pickupRequest.id, trashTypeJson);
+    return {
+      status: 'success',
+      message: 'Pickup Request created successfully',
+      data: {
+        ...createPickupRequestDto,
+        img_url: imageUrl,
+      },
+    };
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('nearby-trash-banks')
+  async getNearbyTrashBanks(@Query() searchNearbyTrashBankDto: SearchNearbyTrashBankDto) {
+    const { lat, lon } = searchNearbyTrashBankDto;
+    if (!lat || !lon) {
+      throw new BadRequestException('Latitude and longitude are required in the query parameters');
+    }
+    const result = await this.setorService.getNearbyTrashBanks({ lat, lon }, searchNearbyTrashBankDto.page, searchNearbyTrashBankDto.limit);
+    return {
+      status: 'success',
+      message: 'Nearby trash banks fetched successfully',
+      data: result.data,
+      paging: result.metadata
+    }
+  }
+
 }
+

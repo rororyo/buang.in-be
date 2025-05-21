@@ -6,6 +6,7 @@ import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { SetorModule } from './app/http/setor/setor.module';
 import { RiwayatModule } from './app/http/riwayat/riwayat.module';
+import { ProfileModule } from './app/http/profile/profile.module';
 
 
 @Module({
@@ -13,6 +14,7 @@ import { RiwayatModule } from './app/http/riwayat/riwayat.module';
     AuthModule,
     SetorModule,
     RiwayatModule,
+    ProfileModule,
     ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRootAsync({
       useFactory: (): TypeOrmModuleOptions => {
@@ -37,8 +39,6 @@ import { RiwayatModule } from './app/http/riwayat/riwayat.module';
                 database: process.env.DB_NAME,
               }),
         };
-    
-        console.log('🛠️ Final DB Config:', config); // 👈 this will show what TypeORM sees
         return config;
       },
     }),
