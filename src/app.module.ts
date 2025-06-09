@@ -7,6 +7,7 @@ import { ConfigModule } from '@nestjs/config';
 import { SetorModule } from './app/http/setor/setor.module';
 import { RiwayatModule } from './app/http/riwayat/riwayat.module';
 import { ProfileModule } from './app/http/profile/profile.module';
+import { BankSampahModule } from './app/http/bank-sampah/bankSampah.module';
 
 
 @Module({
@@ -15,6 +16,7 @@ import { ProfileModule } from './app/http/profile/profile.module';
     SetorModule,
     RiwayatModule,
     ProfileModule,
+    BankSampahModule,
     ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRootAsync({
       useFactory: (): TypeOrmModuleOptions => {

@@ -11,6 +11,9 @@ export class TrashDetail {
   pickup_request_id: string;
 
   @Column()
+  photo_url: string;
+
+  @Column()
   points : number;
 
   @Column({

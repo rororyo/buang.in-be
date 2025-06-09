@@ -13,11 +13,10 @@ export class TrashDetailTrashType {
   @Column()
   trash_type_id: string;
 
-  @Column()
-  photo_url: string;
 
-  @Column()
-  weight: number;
+@Column({ type: 'numeric', precision: 10, scale: 2, default: 0, nullable: false })
+weight: number;
+
 
   //Define the relations
   @ManyToOne(() => TrashDetail, trashDetail => trashDetail.trashDetailsTrashTypes, { onDelete: 'CASCADE' })
