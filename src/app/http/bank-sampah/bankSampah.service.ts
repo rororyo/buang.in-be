@@ -178,17 +178,31 @@ export class BankSampahService {
       return pickupRequest;
     }
   }
-async getPickupRequestByTrashBankId(trashBankId: string, page: number = 1, limit: number = 10) {
-  page = page || 1;
-  limit = limit || 10;
+async getPickupRequestByTrashBankId(
+  trashBankId: string,
+  status?: string,
+  orderBy: 'asc' | 'desc' = 'desc',
+  page: number = 1,
+  limit: number = 10,
+) {
   const skip = (page - 1) * limit;
 
-  // Get the data with count
+  const whereClause: any = {
+    trashBank: { id: trashBankId }, // Join on trash bank
+  };
+
+  if (status) {
+    whereClause.status = status;
+  }
+
+  const orderDirection = orderBy.toLowerCase() === 'asc' ? 'ASC' : 'DESC';
+
   const [data, total] = await this.pickupRequestRepository.findAndCount({
-    where: { trash_bank_id: trashBankId },
-    order: { created_at: 'DESC' },
+    where: whereClause,
+    order: { created_at: orderDirection },
     take: limit,
     skip: skip,
+    relations: ['user', 'trashBank'], // Load both relations
   });
 
   const total_page = Math.ceil(total / limit);
@@ -198,9 +212,12 @@ async getPickupRequestByTrashBankId(trashBankId: string, page: number = 1, limit
       page,
       size: limit,
       total_item: total,
-      total_page: total_page,
+      total_page,
     },
-    data: data,
+    data,
   };
 }
+
+
+
 }

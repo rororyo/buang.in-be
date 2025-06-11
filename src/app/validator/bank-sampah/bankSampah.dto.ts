@@ -1,5 +1,13 @@
-import { Transform, Type } from "class-transformer";
-import { IsArray, IsNotEmpty, IsNumber, IsString, IsUUID, ArrayMinSize, Min } from "class-validator";
+import { Transform, Type } from 'class-transformer';
+import {
+  IsArray,
+  IsNotEmpty,
+  IsNumber,
+  IsString,
+  IsUUID,
+  ArrayMinSize,
+  Min,
+} from 'class-validator';
 
 export class CreateCompleteRequestDto {
   @IsNotEmpty()
@@ -52,17 +60,23 @@ export class CompleteRequestDto {
   weights: number[];
 }
 
-export class AcceptOrRejectRequestDto{
+export class AcceptOrRejectRequestDto {
   @IsNotEmpty()
   @IsUUID()
   pickup_request_id: string;
 
   @IsNotEmpty()
   @IsString()
-  status: string
+  status: string;
 }
 
-export class SearchTrashBankPickupRequestDto{
+export class SearchTrashBankPickupRequestDto {
+  @IsString()
+  status: string;
+
+  @IsString()
+  orderBy: 'asc' | 'desc';
+
   @IsNotEmpty()
   @IsNumber()
   @Type(() => Number)
