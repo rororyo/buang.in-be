@@ -3,6 +3,7 @@ import { Status } from './enums/status.enum';
 import { PickupRequestsTrashType } from './pickup_request_trash_type.entity';
 import { User } from './user.entity';
 import { TrashDetail } from './trash_detail.entity';
+import { SubDistrict } from './sub_district.entity';
 
 @Entity('pickup_requests')
 export class PickupRequest {
@@ -10,13 +11,22 @@ export class PickupRequest {
   id: string;
 
   @Column()
-  name: string;
-
+  name: string;  
+  
   @Column()
   address: string;
 
   @Column()
-  total_weight: number;
+  weight: number;
+
+  @Column()
+  length: number;
+
+  @Column()
+  width: number;
+
+  @Column()
+  height: number;
 
   @Column()
   img_url: string;
@@ -37,7 +47,12 @@ export class PickupRequest {
   @Column({
     type: 'timestamptz'
   })
-  pickup_time: Date;
+  pickup_start_time: Date;
+
+  @Column({
+    type: 'timestamptz'
+  })
+  pickup_end_time: Date;
 
   @Column({
     type: 'timestamptz',
@@ -45,6 +60,9 @@ export class PickupRequest {
   })
   created_at: Date;
   
+  @Column()
+  sub_district_id: string;
+
   @Column()
   user_id: string;
   
@@ -57,6 +75,12 @@ export class PickupRequest {
 
   @OneToMany(() => TrashDetail, trashDetail => trashDetail.pickupRequest, { onDelete: 'CASCADE' })
   trashDetails: TrashDetail[];
+
+  @ManyToOne(() => SubDistrict, subDistrict => subDistrict.pickupRequests, {
+    onDelete: 'CASCADE' 
+  })
+  @JoinColumn({ name: 'sub_district_id' })
+  subDistrict: SubDistrict;
   
   @ManyToOne(() => User, user => user.pickupRequests, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'user_id' })  // maps the FK explicitly

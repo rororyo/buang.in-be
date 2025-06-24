@@ -10,6 +10,7 @@ import { PickupRequestsTrashType } from 'database/entities/pickup_request_trash_
 import { User } from 'database/entities/user.entity';
 import { TrashType } from 'database/entities/trash_type.entity';
 import { PageMetadata } from 'src/app/validator/pagination/pageMetadata.dto';
+import { SubDistrict } from 'database/entities/sub_district.entity';
 
 @Injectable()
 export class SetorService {
@@ -22,6 +23,8 @@ export class SetorService {
     private userRepository: Repository<User>,
     @InjectRepository(TrashType)
     private trashTypeRepository: Repository<TrashType>,
+    @InjectRepository(SubDistrict)
+    private subDistrictRepository: Repository<SubDistrict>,
   ) {}
 
   async createPickupRequest(
@@ -108,4 +111,14 @@ async getNearbyTrashBanks(
     const trashTypes = await this.trashTypeRepository.find();
     return trashTypes;
   }
+
+async getSubDistricts() {
+  const subDistricts = await this.subDistrictRepository.find({
+    order: {
+      name: 'ASC',
+    },
+  });
+  return subDistricts;
+}
+
 }

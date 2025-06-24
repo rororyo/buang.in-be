@@ -45,8 +45,4 @@ export class UpdateProfileDto {
   @IsOptional()
   @IsString()
   address?: string;
-
-  @IsOptional()
-  @IsNumber()
-  points?: number;
 }

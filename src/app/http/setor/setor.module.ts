@@ -8,6 +8,7 @@ import { SetorService } from './setor.service';
 import { PickupRequestsTrashType } from 'database/entities/pickup_request_trash_type.entity';
 import { User } from 'database/entities/user.entity';
 import { TrashType } from 'database/entities/trash_type.entity';
+import { SubDistrict } from 'database/entities/sub_district.entity';
 
 @Module({
   imports: [
@@ -15,7 +16,8 @@ import { TrashType } from 'database/entities/trash_type.entity';
       PickupRequest,
       PickupRequestsTrashType,
       User,
-      TrashType
+      TrashType,
+      SubDistrict
     ])
   ],
   controllers: [SetorController],

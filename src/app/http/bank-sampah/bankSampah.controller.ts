@@ -13,7 +13,6 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { User } from 'database/entities/user.entity';
-import { UpdateProfileDto } from 'src/app/validator/user/users.dto';
 import { BankSampahService } from './bankSampah.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { FileInterceptor } from '@nestjs/platform-express';

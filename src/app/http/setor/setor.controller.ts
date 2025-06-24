@@ -17,6 +17,13 @@ export class SetorController {
   async getTrashTypes() {
     return this.setorService.getTrashTypes();
   }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('sub-districts')
+  async getSubDistricts() {
+    return this.setorService.getSubDistricts();
+  }
+  
   @UseGuards(JwtAuthGuard)
   @Post()
   @UseInterceptors(
