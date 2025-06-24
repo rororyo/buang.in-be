@@ -118,7 +118,7 @@ export class BankSampahService {
 
       // 6. Update pickup request status to completed
       await queryRunner.manager.update(PickupRequest, pickup_request_id, {
-        status: Status.completed,
+        status: Status.accepted,
       });
 
       // 7. Update user's points
