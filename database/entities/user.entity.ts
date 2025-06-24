@@ -1,6 +1,7 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany, Point } from 'typeorm';
 import { Roles } from './enums/roles.enum';
 import { PickupRequest } from './pickup_request.entity';
+import { PointExchangeRequest } from './point_exchange_request.entity';
 
 @Entity('users')
 export class User {
@@ -63,4 +64,6 @@ export class User {
   @OneToMany(() => PickupRequest, pickupRequest => pickupRequest.trashBank, { onDelete: 'CASCADE' })
   receivedPickupRequests: PickupRequest[];
   
+  @OneToMany(()=>PointExchangeRequest, pointExchangeRequest => pointExchangeRequest.user, {onDelete: 'CASCADE'})
+  pointExchangeRequests: PointExchangeRequest[]
 }

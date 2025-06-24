@@ -89,6 +89,9 @@ export class SearchPickupRequestDto {
   @IsUUID()
   user_id: string;
 
+  @IsUUID()
+  sub_district_id: string;
+
   @IsNotEmpty()
   @IsNumber()
   @Type(() => Number)

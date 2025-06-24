@@ -8,6 +8,7 @@ import { SetorModule } from './app/http/setor/setor.module';
 import { RiwayatModule } from './app/http/riwayat/riwayat.module';
 import { ProfileModule } from './app/http/profile/profile.module';
 import { BankSampahModule } from './app/http/bank-sampah/bankSampah.module';
+import { PointExchangeModule } from './app/http/point-exchange/point-exchange.module';
 
 
 @Module({
@@ -17,6 +18,7 @@ import { BankSampahModule } from './app/http/bank-sampah/bankSampah.module';
     RiwayatModule,
     ProfileModule,
     BankSampahModule,
+    PointExchangeModule,
     ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRootAsync({
       useFactory: (): TypeOrmModuleOptions => {
