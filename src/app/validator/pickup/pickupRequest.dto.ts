@@ -20,10 +20,21 @@ export class CreatePickupRequestDto {
   @IsString()
   address: string;
 
-  @IsNumber()
   @IsNotEmpty()
   @Type(() => Number)
-  total_weight: number;
+  weight: number;
+
+  @IsNotEmpty()
+  @Type(() => Number)
+  length: number;
+
+  @IsNotEmpty()
+  @Type(() => Number)
+  width: number;
+
+  @IsNotEmpty()
+  @Type(() => Number)
+  height: number;
 
   @IsString()
   img_url: string;
@@ -48,7 +59,16 @@ export class CreatePickupRequestDto {
   @IsNotEmpty()
   @IsDate()
   @IsNotEmpty()
-  pickup_time: Date;
+  pickup_start_time: Date;
+
+  @IsNotEmpty()
+  @IsDate()
+  @IsNotEmpty()
+  pickup_end_time: Date;
+
+  @IsNotEmpty()
+  @IsUUID()
+  sub_district_id: string;
 
   @IsNotEmpty()
   @IsUUID()

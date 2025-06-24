@@ -4,6 +4,7 @@ import {
   Controller,
   Get,
   Post,
+  Put,
   Req,
   Res,
   UseGuards,
@@ -88,4 +89,6 @@ export class AuthController {
       message: 'Logout Success',
     };
   }
+
+
 }
